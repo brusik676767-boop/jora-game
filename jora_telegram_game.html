@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff1d6">
+<title>Жора — мой питомец</title>
+<style>
+:root{--ink:#493526;--cream:#fff8eb;--orange:#ff9d38;--pink:#ff7e9d;--green:#74bd83;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(160deg,#fff0d3,#ffe1dc 60%,#e9e8ff);color:var(--ink);min-height:100vh}
+main{max-width:520px;margin:auto;padding:18px 16px 34px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+h1{font-size:27px;margin:0} .coins{background:#fff;padding:9px 13px;border-radius:18px;font-weight:800;box-shadow:0 4px 12px #70452a18}
+.card{background:#ffffffdf;border:1px solid #fff;border-radius:24px;padding:17px;margin:13px 0;box-shadow:0 8px 24px #70452a12}
+.hero{text-align:center;position:relative;overflow:hidden;background:linear-gradient(145deg,#ffe7b6,#ffd5cb)}
+.cat{font-size:112px;line-height:1.3;filter:drop-shadow(0 8px 5px #9b572533);margin:4px 0}
+.mood{font-weight:800;font-size:18px}.level{font-size:13px;opacity:.75;margin-top:3px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.stat{background:#fff9;border-radius:15px;padding:9px 5px;font-size:12px}
+.stat b{display:block;font-size:17px;margin-bottom:4px}
+h2{font-size:18px;margin:0 0 12px}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+button{border:0;border-radius:16px;padding:13px 10px;font-size:15px;font-weight:800;color:var(--ink);background:#ffe2ae;cursor:pointer;box-shadow:0 3px 0 #d7b47c;touch-action:manipulation}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 #d7b47c}
+button.pink{background:#ffd4df;box-shadow:0 3px 0 #dfa2b1}button.green{background:#d7f0d9;box-shadow:0 3px 0 #9bc5a0}
+button:disabled{opacity:.45;cursor:not-allowed}
+.shopgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.item{background:#fff8ed;border-radius:16px;padding:11px;text-align:center}
+.item .emoji{font-size:29px}.item p{margin:5px 0;font-weight:700;font-size:14px}.item small{display:block;margin-bottom:8px;opacity:.7}
+.task{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0e3d5;font-size:14px}
+.task:last-child{border:0}.task button{padding:8px 11px;font-size:12px}
+.note{text-align:center;font-size:12px;opacity:.65;margin:16px 5px}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#493526;color:white;padding:11px 16px;border-radius:20px;opacity:0;transition:.2s;pointer-events:none;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<main>
+<header><h1>🐾 Жора</h1><div class="coins">⭐ <span id="coins">30</span></div></header>
+<section class="card hero">
+<div class="cat" id="cat">🐱</div>
+<div class="mood" id="mood">Жора счастлив!</div>
+<div class="level">Уровень <span id="level">1</span> · Опыт: <span id="xp">0</span>/100</div>
+<div class="stats">
+<div class="stat">🍗 Сытость<b id="food">70</b><small>/ 100</small></div>
+<div class="stat">💖 Радость<b id="joy">70</b><small>/ 100</small></div>
+<div class="stat">🫧 Чистота<b id="clean">70</b><small>/ 100</small></div>
+</div>
+</section>
+<section class="card">
+<h2>Поиграй с Жорой</h2>
+<div class="actions">
+<button onclick="care('feed')">🍗 Покормить · 5⭐</button>
+<button class="pink" onclick="care('pet')">💖 Погладить</button>
+<button class="green" onclick="care('wash')">🫧 Помыть</button>
+<button onclick="care('play')">🎾 Поиграть</button>
+</div>
+</section>
+<section class="card">
+<h2>🛍️ Магазин</h2>
+<div class="shopgrid">
+<div class="item"><div class="emoji">🐟</div><p>Вкусная рыбка</p><small>+25 сытости · 8⭐</small><button onclick="buy('fish')">Купить</button></div>
+<div class="item"><div class="emoji">🧶</div><p>Клубок</p><small>+25 радости · 8⭐</small><button onclick="buy('ball')">Купить</button></div>
+<div class="item"><div class="emoji">🎀</div><p>Розовый бантик</p><small>Украшение · 15⭐</small><button onclick="buy('bow')">Купить</button></div>
+<div class="item"><div class="emoji">🕶️</div><p>Очки</p><small>Украшение · 20⭐</small><button onclick="buy('glasses')">Купить</button></div>
+</div>
+</section>
+<section class="card">
+<h2>🎯 Задания</h2>
+<div class="task"><span>Погладь Жору один раз</span><button id="taskPet" onclick="claim('pet')">+5⭐</button></div>
+<div class="task"><span>Покорми Жору один раз</span><button id="taskFeed" onclick="claim('feed')">+5⭐</button></div>
+<div class="task"><span>Поиграй с Жорой один раз</span><button id="taskPlay" onclick="claim('play')">+5⭐</button></div>
+</section>
+<p class="note">Игра сохраняет прогресс на этом устройстве. Это первая версия Жоры 💛</p>
+</main>
+<div id="toast"></div>
+<script>
+const defaults={coins:30,food:70,joy:70,clean:70,xp:0,level:1,bow:false,glasses:false,done:{pet:false,feed:false,play:false}};
+let s;try{s={...defaults,...JSON.parse(localStorage.getItem('jora-save')||'{}')};s.done={...defaults.done,...(s.done||{})}}catch(e){s={...defaults}}
+function save(){localStorage.setItem('jora-save',JSON.stringify(s));render()}
+function say(t){let el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)}
+function addXp(n){s.xp+=n;if(s.xp>=100){s.xp-=100;s.level++;s.coins+=10;say('Ура! Жора перешёл на новый уровень! +10⭐')}}
+function care(a){
+ if(a==='feed'){if(s.coins<5)return say('Не хватает звёздочек!');s.coins-=5;s.food=Math.min(100,s.food+20);s.done.feed=true;addXp(5);say('Ням-ням! Жора поел 🍗')}
+ if(a==='pet'){s.joy=Math.min(100,s.joy+15);s.done.pet=true;addXp(5);say('Жора мурлычет! 💖')}
+ if(a==='wash'){s.clean=100;addXp(3);say('Жора теперь чистенький! 🫧')}
+ if(a==='play'){s.joy=Math.min(100,s.joy+25);s.food=Math.max(0,s.food-8);s.done.play=true;addXp(8);say('Весело поиграли! 🎾')}
+ save()
+}
+function buy(item){
+ let prices={fish:8,ball:8,bow:15,glasses:20},p=prices[item];if(s.coins<p)return say('Не хватает звёздочек!');
+ if(item==='bow'&&s.bow||item==='glasses'&&s.glasses)return say('Уже куплено!');
+ s.coins-=p;
+ if(item==='fish')s.food=Math.min(100,s.food+25);
+ if(item==='ball')s.joy=Math.min(100,s.joy+25);
+ if(item==='bow')s.bow=true;
+ if(item==='glasses')s.glasses=true;
+ say('Покупка успешна! 🎉');save()
+}
+function claim(k){if(!s.done[k])return say('Сначала выполни задание!');if(s.done[k]==='claimed')return say('Награда уже получена!');s.coins+=5;s.done[k]='claimed';say('Получено 5 звёздочек! ⭐');save()}
+function render(){
+ for(let k of ['coins','food','joy','clean','xp','level'])document.getElementById(k).textContent=s[k];
+ document.getElementById('cat').textContent=(s.glasses?'🕶️':'')+(s.bow?'🎀':'')+'🐱';
+ document.getElementById('mood').textContent=s.food<25?'Жора проголодался!':s.joy<25?'Жоре скучно!':s.clean<25?'Жору пора помыть!':'Жора счастлив!';
+ for(let k of ['pet','feed','play']){let b=document.getElementById('task'+k[0].toUpperCase()+k.slice(1));b.textContent=s.done[k]==='claimed'?'Готово ✓':'+5⭐';b.disabled=s.done[k]==='claimed'}
+}
+render();
+</script>
+</body>
+</html>
